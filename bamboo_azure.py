@@ -93,12 +93,16 @@ def lambda_handler(event, context):
             
             if response.status_code == 200:
                 if hasattr(response, "text") and response.text != '':
-                    print("Batch update successful.", response.text)
+                    responses = json.loads(response.text)
+                    if 'responses' in responses:
+                        for resp in responses['responses']:
+                            if 'status' in resp and resp['status'] > 399:
+                                print("Error in processing: ", resp['body'])
             else:
                 if hasattr(response, "text") and response.text != '':
-                    print(f"Error: {response.status} - {response.text}")
+                    print(f"Batch Response Error: {response.status} - {response.text}")
                 else:
-                    print(f"Error: {response.status}")
+                    print(f"Batch Response Error with no Text: {response.status}")
     
         # Split users into batches of 20 and send each batch
         batch_size = 20
