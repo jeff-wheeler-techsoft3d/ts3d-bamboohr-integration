@@ -102,7 +102,7 @@ if response.status_code == 200:
 
 for ts3d_group in ts3d_groups:
     group_description = "This is an auto generated group - " + ts3d_group + " - based on the Bamboo HR parameters"
-    print(ts3d_group + "@techsoft3d.com employee geroup is described as follows: " + group_description + " with the users as follows: " + str(ts3d_groups[ts3d_group]))
+    print(ts3d_group + "@techsoft3d.com employee group is described as follows: " + group_description + " with the users as follows: " + str(ts3d_groups[ts3d_group]))
 
     if ts3d_group == "OpsTech.Test":
         print("#######################################################################################################################################")
