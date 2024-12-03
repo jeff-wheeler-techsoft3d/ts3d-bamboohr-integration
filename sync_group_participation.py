@@ -101,9 +101,13 @@ if response.status_code == 200:
 ####################################
 
 for ts3d_group in ts3d_groups:
+    group_description = "This is an auto generated group - " + ts3d_group + " - based on the Bamboo HR parameters"
+    print(ts3d_group + "@techsoft3d.com employee geroup is described as follows: " + group_description + " with the users as follows: " + str(ts3d_groups[ts3d_group]))
+
     if ts3d_group == "OpsTech.Test":
-        print("Processing distribution list: " + ts3d_group + " with: " + str(ts3d_groups[ts3d_group]))
-        group_description = "This is an auto generated group - " + ts3d_group + " - based on the Bamboo HR parameters"
+        print("#######################################################################################################################################")
+        print("#  TEST   #############################################################################################################################")
+        print("#######################################################################################################################################")
 
         #############################################
         # Update  data in Office 365 from Bamboo HR.
