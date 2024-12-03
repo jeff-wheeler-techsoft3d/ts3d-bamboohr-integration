@@ -22,7 +22,7 @@ bamboo_report = 149
 
 headers = {"Accept": "application/json", "content-type": "application/json"}
 
-api_key = "c7236afbeb40ebf529459f55d55ab1cb81c87c8b" #os.environ['bamboo_hr_key']
+api_key = os.environ['bamboo_hr_key']
 
 url = "https://" + api_key +":x@api.bamboohr.com/api/gateway.php/techsoft3d/v1/reports/" + str(bamboo_report) + "?format=json&fd=yes&onlyCurrent=true"
 
@@ -275,8 +275,8 @@ for ts3d_group in ts3d_groups:
 
         # Variables
         BASE_URL = "https://techsoft3d.atlassian.net"  # Replace with your Atlassian domain
-        API_EMAIL = "automations@techsoft3d.com" #os.environ['atlassian_user_id']
-        API_TOKEN = "ONaN1iRHjugcmLH5kpSL301D" #os.environ['atlassian_token']
+        API_EMAIL = os.environ['atlassian_user_id']
+        API_TOKEN = os.environ['atlassian_token']
 
         # Helper function to make authenticated API requests
         def make_atlassian_request(method, endpoint, data=None):
@@ -396,7 +396,7 @@ for ts3d_group in ts3d_groups:
         JC_API_URL = "https://console.jumpcloud.com/api"
 
         # Your JumpCloud API key
-        API_KEY = "jca_6JjbWrVyCEH65D2iwnPpBs7Pc5kZ2svTzDdR"  #os.environ['jumpcloud_token']
+        API_KEY = os.environ['jumpcloud_token']
 
         # Headers for API requests
         HEADERS = {
