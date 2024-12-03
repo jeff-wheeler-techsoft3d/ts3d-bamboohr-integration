@@ -406,15 +406,16 @@ for ts3d_group in ts3d_groups:
         }
 
         def get_jumpcloud_user_group(group_name):
-            """Retrieve a user group by name."""
-            url = f"{JC_API_URL}/v2/usergroups"
+            url = "https://console.jumpcloud.com/api/v2/groups?filter=name:eq:" + group_name
+            
             response = requests.get(url, headers=HEADERS)
-            response.raise_for_status()
-            groups = response.json()
-            for group in groups:
-                if group["name"].lower() == group_name.lower():
-                    return group
-            return None
+            
+            if response.status_code == 200:
+                groups = response.json()
+                return groups[0]
+            else:
+                print(f"Failed to retrieve group: {response.text}")
+                return None
 
         def create_jumpcloud_user_group(group_name, description=""):
             """Create a new user group."""
