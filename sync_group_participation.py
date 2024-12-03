@@ -500,4 +500,4 @@ for ts3d_group in ts3d_groups:
                 #remove_jumpcloud_user_from_group(user_id, group_id)
                 print(f"Removed user '{user_id}' from group '{group_name}'.")
 
-        sync_jumpcloud_group_members(ts3d_group, ts3d_groups[ts3d_group], group_description)`
+        sync_jumpcloud_group_members(ts3d_group, ts3d_groups[ts3d_group], group_description)
