@@ -272,7 +272,7 @@ for ts3d_group in ts3d_groups:
             print("Error acquiring token:", token_response.get("error_description"))
 
         #############################################
-        # Update data in Confluence from Bamboo HR.
+        # Update data in Atlassian from Bamboo HR.
         #############################################
 
         # Variables
@@ -465,7 +465,14 @@ for ts3d_group in ts3d_groups:
             response = requests.get(url, headers=HEADERS)
             response.raise_for_status()
             members = response.json()
-            return [member["id"] for member in members if member["type"] == "user"]
+            group_members = []
+            for member in members:
+                if 'to' in member:
+                    member = member['to']
+                if "type" in member and member["type"] == "user":
+                    group_members.append(member["id"])
+            
+            return group_members
 
         def sync_jumpcloud_group_members(group_name, user_emails, description=""):
             """Synchronize group members with the specified list of user emails."""
