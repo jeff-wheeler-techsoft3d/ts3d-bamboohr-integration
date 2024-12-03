@@ -7,9 +7,15 @@ image: python:3.10.12
 
 pipelines:
   custom:
-    execute:
+    execute_employee_data:
       - step:
-          name: execute script
+          name: Copy Employee Data for Email Signatures
           script:
             - pip install -r requirements.txt
             - python3 bamboo_azure.py
+    execute_group_sync:
+      - step:
+          name: Create and Update Employee Groups
+          script:
+            - pip install -r requirements.txt
+            - python3 sync_group_participation.py  # The second Python script to execute
