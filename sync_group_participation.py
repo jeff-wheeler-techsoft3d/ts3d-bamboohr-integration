@@ -260,13 +260,11 @@ for ts3d_group in ts3d_groups:
                 
                 # Add missing users
                 for user_id in to_add:
-                    print("Mock added")
-                    #add_o365_user_to_group(group_id, user_id)
+                    add_o365_user_to_group(group_id, user_id)
 
                 # Remove extra users
                 for user_id in to_remove:
-                    print("Mock Removed")
-                    #remove_o365_user_from_group(group_id, user_id)
+                    remove_o365_user_from_group(group_id, user_id)
 
             sync_o365_group_members(ts3d_group + "@techsoft3d.com", ts3d_group, ts3d_group, group_description, ts3d_groups[ts3d_group])
 
@@ -382,13 +380,11 @@ for ts3d_group in ts3d_groups:
 
             # Add missing users
             for account_id in to_add:
-                print("Mock added")
-                #add_atlassian_user_to_group(group_name, account_id)
+                add_atlassian_user_to_group(group_name, account_id)
 
             # Remove extra users
             for account_id in to_remove:
-                print("Mock removed")
-                #remove_atlassian_user_from_group(group_name, account_id)
+                remove_atlassian_user_from_group(group_name, account_id)
 
         sync_atlassian_group_members(ts3d_group, ts3d_groups[ts3d_group])
 
@@ -496,12 +492,10 @@ for ts3d_group in ts3d_groups:
 
             # Add users
             for user_id in to_add:
-                #add_jumpcloud_user_to_group(user_id, group_id)
-                print(f"Added user '{user_id}' to group '{group_name}'.")
+                add_jumpcloud_user_to_group(user_id, group_id)
 
             # Remove users
             for user_id in to_remove:
-                #remove_jumpcloud_user_from_group(user_id, group_id)
-                print(f"Removed user '{user_id}' from group '{group_name}'.")
+                remove_jumpcloud_user_from_group(user_id, group_id)
 
         sync_jumpcloud_group_members(ts3d_group, ts3d_groups[ts3d_group], group_description)
