@@ -64,7 +64,7 @@ if response.status_code == 200:
                         if country_code != None:
                             check_and_add_to_group("Employees." + country_code, employee['workEmail'], ts3d_groups)                    
 
-                        if 'Remote' in employee['location']:
+                        if 'location' in employee and 'Remote' in employee['location']:
                             check_and_add_to_group("Employees.Remote", employee['workEmail'], ts3d_groups)
 
                     
@@ -152,7 +152,7 @@ for ts3d_group in ts3d_groups:
                 }
                 response = requests.request(method, url, headers=headers, json=data)
                 if not response.ok:
-                    raise Exception(f"API request failed: {response.status_code} - {response.text}")
+                    print(f"ERROR: API request failed: {response.status_code} - {response.text}")
                 return response.json() if response.text else {}
 
             # Check if a group exists by its email address
@@ -164,17 +164,17 @@ for ts3d_group in ts3d_groups:
                         return groups[0]  # Return the group object
                     return None
                 except Exception as e:
-                    raise Exception(f"Failed to retrieve group: {e}")
+                    print(f"ERROR: Failed to retrieve group: {e}")
 
             # Create a Microsoft 365 or Security Group
-            def create_o365_group(group_email, display_name, mail_nickname, description, is_m365_group=True):
+            def create_o365_group(group_email, display_name, mail_nickname, description):
                 group_data = {
                     "displayName": display_name,
                     "mailNickname": mail_nickname,
                     "description": description,
-                    "mailEnabled": is_m365_group,  # True for M365, False for Security Groups
-                    "securityEnabled": not is_m365_group,  # True for Security Groups
-                    "groupTypes": ["Unified"] if is_m365_group else [],
+                    "mailEnabled": True,  # True for M365, False for Security Groups
+                    "securityEnabled": True,  # True for Security Groups
+                    "groupTypes": ["Unified"],
                     "proxyAddresses": [
                         f"SMTP:{group_email}",
                         f"smtp:{mail_nickname}@hoops3d.onmicrosoft.com"  # The primary email address, "SMTP" in uppercase
@@ -185,7 +185,7 @@ for ts3d_group in ts3d_groups:
                     print(f"O365 Group '{display_name}' created successfully.")
                     return response["id"]
                 except Exception as e:
-                    raise Exception(f"Failed to create group '{display_name}': {e}")
+                    print(f"ERROR: Failed to create group '{display_name}': {e}")
 
             # Get current members of a group
             def get_o365_group_members(group_id):
@@ -196,6 +196,14 @@ for ts3d_group in ts3d_groups:
                     members.extend(response.get("value", []))
                     endpoint = response.get("@odata.nextLink")  # Pagination support
                 return [member["id"] for member in members]
+            
+            def delete_o365_group(group_id):
+                try:
+                    response = make_o365_request("DELETE", "/groups/" + str(group_id))
+                    print(f"O365 Group '{group_id}' deleted successfully.")
+                except Exception as e:
+                    print(f"ERROR: Failed to delete group '{group_id}': {e}")
+        
 
             # Add a user to a group
             def add_o365_user_to_group(group_id, user_id):
@@ -206,7 +214,7 @@ for ts3d_group in ts3d_groups:
                     make_o365_request("POST", f"/groups/{group_id}/members/$ref", member_ref)
                     print(f"User '{user_id}' added to group '{group_id}'.")
                 except Exception as e:
-                    raise Exception(f"Failed to add user '{user_id}' to group '{group_id}': {e}")
+                    print(f"ERROR: Failed to add user '{user_id}' to group '{group_id}': {e}")
 
             # Remove a user from a group
             def remove_o365_user_from_group(group_id, user_id):
@@ -214,7 +222,7 @@ for ts3d_group in ts3d_groups:
                     make_o365_request("DELETE", f"/groups/{group_id}/members/{user_id}/$ref")
                     print(f"User '{user_id}' removed from group '{group_id}'.")
                 except Exception as e:
-                    raise Exception(f"Failed to remove user '{user_id}' from group '{group_id}': {e}")
+                    print(f"ERROR: Failed to remove user '{user_id}' from group '{group_id}': {e}")
 
             # Map email addresses to Azure AD user IDs
             def get_o365_user_id_by_email(email):
@@ -226,7 +234,7 @@ for ts3d_group in ts3d_groups:
                     print(f"User '{email}' not found.")
                     return None
                 except Exception as e:
-                    raise Exception(f"Failed to retrieve user ID for '{email}': {e}")
+                    print(f"ERROR: Failed to retrieve user ID for '{email}': {e}")
 
             # Synchronize group membership with expected users
             def sync_o365_group_members(group_email, display_name, mail_nickname, description, expected_user_emails):
@@ -289,7 +297,7 @@ for ts3d_group in ts3d_groups:
             }
             response = requests.request(method, url, headers=headers, json=data)
             if not response.ok:
-                raise Exception(f"API request failed: {response.status_code} - {response.text}")
+                print(f"ERROR: API request failed: {response.status_code} - {response.text}")
             return response.json() if response.text else {}
 
         # Check if a group exists
@@ -300,7 +308,7 @@ for ts3d_group in ts3d_groups:
             except Exception as e:
                 if "does not exist" in str(e):
                     return None
-                raise
+                print("ERROR: Unable to find atlassian group" + str(group_name))
 
         # Create a new group
         def create_atlassian_group(group_name):
