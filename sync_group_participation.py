@@ -64,7 +64,7 @@ if response.status_code == 200:
                         if country_code != None:
                             check_and_add_to_group("Employees." + country_code, employee['workEmail'], ts3d_groups)                    
 
-                        if 'location' in employee and 'Remote' in employee['location']:
+                        if 'location' in employee and employee['location'] and 'Remote' in employee['location']:
                             check_and_add_to_group("Employees.Remote", employee['workEmail'], ts3d_groups)
 
                     
