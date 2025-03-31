@@ -45,53 +45,56 @@ if response.status_code == 200:
         json_raw = json.loads(response.text)
         if 'employees' in json_raw:
             for employee in json_raw['employees']:
-                if employee['employmentHistoryStatus'] != 'Terminated' and employee['workEmail']:
-                    # Update world Employee Groups
-                    check_and_add_to_group("World", employee['workEmail'], ts3d_groups)
+                try: 
+                    if employee['employmentHistoryStatus'] != 'Terminated' and employee['workEmail']:
+                        # Update world Employee Groups
+                        check_and_add_to_group("World", employee['workEmail'], ts3d_groups)
 
-                    if employee['customDistributionListsTest'] != None:
-                        for ts3d_group in employee['customDistributionListsTest'].split(','):
-                            check_and_add_to_group(ts3d_group, employee['workEmail'], ts3d_groups)
+                        if employee['customDistributionListsTest'] != None:
+                            for ts3d_group in employee['customDistributionListsTest'].split(','):
+                                check_and_add_to_group(ts3d_group, employee['workEmail'], ts3d_groups)
 
-                    if employee['customEmployeeGroupOverride'] != None:
-                        for ts3d_group in employee['customEmployeeGroupOverride'].split(','):
-                            check_and_add_to_group(ts3d_group, employee['workEmail'], ts3d_groups)
-                            
+                        if employee['customEmployeeGroupOverride'] != None:
+                            for ts3d_group in employee['customEmployeeGroupOverride'].split(','):
+                                check_and_add_to_group(ts3d_group, employee['workEmail'], ts3d_groups)
+                                
 
-                    #Update World.Country Employee Groups
-                    if employee['country'] != None:
-                        country_code = get_country_code(employee['country'])
-                        if country_code != None:
-                            check_and_add_to_group("Employees." + country_code, employee['workEmail'], ts3d_groups)                    
+                        #Update World.Country Employee Groups
+                        if employee['country'] != None:
+                            country_code = get_country_code(employee['country'])
+                            if country_code != None:
+                                check_and_add_to_group("Employees." + country_code, employee['workEmail'], ts3d_groups)                    
 
-                        if 'location' in employee and employee['location'] and 'Remote' in employee['location']:
-                            check_and_add_to_group("Employees.Remote", employee['workEmail'], ts3d_groups)
+                            if 'location' in employee and employee['location'] and 'Remote' in employee['location']:
+                                check_and_add_to_group("Employees.Remote", employee['workEmail'], ts3d_groups)
 
-                    
-                    if 'division' in employee:
-                        if 'Toolkits' in employee['division']:
-                            check_and_add_to_group("World.Toolkits", employee['workEmail'], ts3d_groups)
-                        if 'Applications' in employee['division']:
-                            check_and_add_to_group("World.Apps", employee['workEmail'], ts3d_groups)
-                    
-                    if employee['customExecutive']:
-                        employee_by_exec_group = employee['customExecutive'].replace('Exec', '').replace(' ', '')
-                        check_and_add_to_group(employee_by_exec_group, employee['workEmail'], ts3d_groups)
-                        if employee['department']:
-                            department = employee['department'].replace(' ', '')
-                            if department != employee_by_exec_group:
-                                employee_by_exec_department = employee_by_exec_group + "." + department
-                                check_and_add_to_group(employee_by_exec_department, employee['workEmail'], ts3d_groups)
-
-                    #Update People Managers Employee Groups
-                    if employee["-44"] != None and employee["-44"] == "1":
-                        check_and_add_to_group("People.Managers", employee['workEmail'], ts3d_groups)
-
-                        if 'division' in employee:
+                        
+                        if 'division' in employee and employee['division']:
                             if 'Toolkits' in employee['division']:
-                                check_and_add_to_group("People.Managers.Toolkits", employee['workEmail'], ts3d_groups)
+                                check_and_add_to_group("World.Toolkits", employee['workEmail'], ts3d_groups)
                             if 'Applications' in employee['division']:
-                                check_and_add_to_group("People.Managers.Apps", employee['workEmail'], ts3d_groups)
+                                check_and_add_to_group("World.Apps", employee['workEmail'], ts3d_groups)
+                        
+                        if employee['customExecutive']:
+                            employee_by_exec_group = employee['customExecutive'].replace('Exec', '').replace(' ', '')
+                            check_and_add_to_group(employee_by_exec_group, employee['workEmail'], ts3d_groups)
+                            if employee['department']:
+                                department = employee['department'].replace(' ', '')
+                                if department != employee_by_exec_group:
+                                    employee_by_exec_department = employee_by_exec_group + "." + department
+                                    check_and_add_to_group(employee_by_exec_department, employee['workEmail'], ts3d_groups)
+
+                        #Update People Managers Employee Groups
+                        if employee["-44"] != None and employee["-44"] == "1":
+                            check_and_add_to_group("People.Managers", employee['workEmail'], ts3d_groups)
+
+                            if 'division' in employee and employee['division'] != None:
+                                if employee.get('division') and 'Toolkits' in employee['division']:
+                                    check_and_add_to_group("People.Managers.Toolkits", employee['workEmail'], ts3d_groups)
+                                if 'Applications' in employee['division']:
+                                    check_and_add_to_group("People.Managers.Apps", employee['workEmail'], ts3d_groups)
+                except Exception as e:
+                    print("ERROR: Failed to process employee data: ", e)
                     
 
 
