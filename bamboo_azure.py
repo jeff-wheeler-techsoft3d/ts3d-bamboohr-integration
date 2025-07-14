@@ -24,6 +24,15 @@ def lambda_handler(event, context):
                 for employee in json_raw['employees']:
                     if employee['workEmail'] != None and employee['jobTitle'] != None and employee['country'] != None:
                         users_to_update.append({"email": employee['workEmail'], "title": employee['jobTitle'], "country": employee['country']})
+                    else:
+                        print(f"Skipping employee {employee['workEmail']} due to missing data.")
+            else:
+                print("No 'employees' key found in the response.")
+    else:
+        if hasattr(response, "text") and response.text != '':
+            print(f"Error fetching data from Bamboo HR: {response.status_code} - {response.text}")
+        else:
+            print(f"Error fetching data from Bamboo HR with no Text: {response.status_code}")
     
                 
     
@@ -52,6 +61,8 @@ def lambda_handler(event, context):
     token_response = app.acquire_token_for_client(scopes=scope)
     
     if "access_token" in token_response:
+        print("Token acquired successfully.")
+        print(f"Number of users to update: {len(users_to_update)}")
         access_token = token_response["access_token"]
         headers = {
             'Authorization': f'Bearer {access_token}',
