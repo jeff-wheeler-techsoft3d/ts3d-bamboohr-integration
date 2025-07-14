@@ -99,6 +99,11 @@ def lambda_handler(event, context):
                     } for index, user in enumerate(batch)
                 ]
             }
+            print(f"Sending batch request with {len(batch)} users.")
+            
+            # print the batch request details for debugging
+            print(json.dumps(batch_request, indent=2))
+
             batch_endpoint = 'https://graph.microsoft.com/v1.0/$batch'
             response = requests.post(batch_endpoint, headers=headers, json=batch_request)
             
@@ -109,6 +114,10 @@ def lambda_handler(event, context):
                         for resp in responses['responses']:
                             if 'status' in resp and resp['status'] > 399:
                                 print("Error in processing: ", resp['body'])
+                    else:
+                        print("No 'responses' key found in the batch response.")
+                else:
+                    print("Batch Response is empty.")
             else:
                 if hasattr(response, "text") and response.text != '':
                     print(f"Batch Response Error: {response.status} - {response.text}")
@@ -120,6 +129,7 @@ def lambda_handler(event, context):
         for i in range(0, len(users_to_update), batch_size):
             batch = users_to_update[i:i+batch_size]
             send_batch_request(batch)
+            print(f"Processed batch {i // batch_size + 1} of {len(users_to_update) // batch_size + 1}") 
     else:
         print("Error acquiring token:", token_response.get("error_description"))
 
