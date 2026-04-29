@@ -2,6 +2,8 @@ name: Copy Employee Data for Email Signatures
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '0 * * * *'
 
 jobs:
   execute-employee-data:

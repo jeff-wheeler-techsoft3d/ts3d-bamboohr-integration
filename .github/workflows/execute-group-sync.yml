@@ -2,6 +2,8 @@ name: Create and Update Employee Groups
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '15 * * * *'
 
 jobs:
   execute-group-sync:
