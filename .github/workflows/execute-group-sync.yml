@@ -1,0 +1,28 @@
+name: Create and Update Employee Groups
+
+on:
+  workflow_dispatch:
+
+jobs:
+  execute-group-sync:
+    name: Create and Update Employee Groups
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.10.12
+    env:
+      bamboo_hr_key: ${{ secrets.BAMBOO_HR_KEY }}
+      azure_app_client_id: ${{ secrets.AZURE_APP_CLIENT_ID }}
+      azure_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+      azure_client_secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+      atlassian_user_id: ${{ secrets.ATLASSIAN_USER_ID }}
+      atlassian_token: ${{ secrets.ATLASSIAN_TOKEN }}
+      jumpcloud_token: ${{ secrets.JUMPCLOUD_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run sync_group_participation.py
+        run: python3 sync_group_participation.py

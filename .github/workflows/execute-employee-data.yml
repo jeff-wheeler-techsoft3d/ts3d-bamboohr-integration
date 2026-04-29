@@ -1,0 +1,25 @@
+name: Copy Employee Data for Email Signatures
+
+on:
+  workflow_dispatch:
+
+jobs:
+  execute-employee-data:
+    name: Copy Employee Data for Email Signatures
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.10.12
+    env:
+      bamboo_hr_key: ${{ secrets.BAMBOO_HR_KEY }}
+      azure_app_client_id: ${{ secrets.AZURE_APP_CLIENT_ID }}
+      azure_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+      azure_client_secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run bamboo_azure.py
+        run: python3 bamboo_azure.py
