@@ -13,6 +13,11 @@ dist/
 # Compiled Python bytecode
 *.py[cod]
 
+# Environment variables
+.env
+.env.*
+!.env.example
+
 # Log files
 *.log
 

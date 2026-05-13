@@ -1,0 +1,128 @@
+{
+  "employeeId": "119",
+  "email": "jeff.wheeler@techsoft3d.com",
+  "raw": {
+    "employee": {
+      "id": 119
+    },
+    "categories": [
+      {
+        "id": 23,
+        "name": "Correspondents",
+        "canRenameCategory": "yes",
+        "canDeleteCategory": "yes",
+        "canUploadFiles": "yes",
+        "displayIfEmpty": "yes",
+        "files": []
+      },
+      {
+        "id": 18,
+        "name": "Resumes and Applications",
+        "canRenameCategory": "yes",
+        "canDeleteCategory": "yes",
+        "canUploadFiles": "yes",
+        "displayIfEmpty": "yes",
+        "files": []
+      },
+      {
+        "id": 17,
+        "name": "Signed Documents",
+        "canRenameCategory": "yes",
+        "canDeleteCategory": "yes",
+        "canUploadFiles": "yes",
+        "displayIfEmpty": "yes",
+        "files": [
+          {
+            "id": 39,
+            "name": "Annual Development Plan & Professional Review_2024_v3.pdf",
+            "originalFileName": "Annual Development Plan & Professional Review_2024_v3.pdf",
+            "size": 3654776,
+            "dateCreated": "2024-11-08T21:01:21+0000",
+            "createdBy": "Karen Burleigh",
+            "shareWithEmployee": "yes",
+            "canRenameFile": "yes",
+            "canDeleteFile": "yes",
+            "canChangeShareWithEmployeeFieldValue": "yes"
+          },
+          {
+            "id": 607,
+            "name": "Hiring Manager Recruiting Request Form_2025_FOR BAMBOO.pdf",
+            "originalFileName": "Hiring Manager Recruiting Request Form_2025_FOR BAMBOO.pdf",
+            "size": 4459407,
+            "dateCreated": "2025-09-26T13:35:10+0000",
+            "createdBy": "Cecile Quillard",
+            "shareWithEmployee": "yes",
+            "canRenameFile": "yes",
+            "canDeleteFile": "yes",
+            "canChangeShareWithEmployeeFieldValue": "yes"
+          },
+          {
+            "id": 328,
+            "name": "US People Policies Guide w. State Supplements_04.2025.pdf",
+            "originalFileName": "US People Policies Guide w. State Supplements_04.2025.pdf",
+            "size": 4146683,
+            "dateCreated": "2025-05-22T00:49:57+0000",
+            "createdBy": "Jeffrey Wheeler",
+            "shareWithEmployee": "yes",
+            "canRenameFile": "yes",
+            "canDeleteFile": "yes",
+            "canChangeShareWithEmployeeFieldValue": "yes"
+          }
+        ]
+      },
+      {
+        "id": 20,
+        "name": "Tasklist Attachments",
+        "canRenameCategory": "yes",
+        "canDeleteCategory": "yes",
+        "canUploadFiles": "yes",
+        "displayIfEmpty": "yes",
+        "files": []
+      },
+      {
+        "id": 19,
+        "name": "Workflow Attachments",
+        "canRenameCategory": "yes",
+        "canDeleteCategory": "yes",
+        "canUploadFiles": "yes",
+        "displayIfEmpty": "yes",
+        "files": []
+      }
+    ]
+  },
+  "flat": [
+    {
+      "categoryId": 17,
+      "category": "Signed Documents",
+      "fileId": 39,
+      "name": "Annual Development Plan & Professional Review_2024_v3.pdf",
+      "originalFileName": "Annual Development Plan & Professional Review_2024_v3.pdf",
+      "size": 3654776,
+      "dateCreated": "2024-11-08T21:01:21+0000",
+      "createdBy": "Karen Burleigh",
+      "shareWithEmployee": "yes"
+    },
+    {
+      "categoryId": 17,
+      "category": "Signed Documents",
+      "fileId": 607,
+      "name": "Hiring Manager Recruiting Request Form_2025_FOR BAMBOO.pdf",
+      "originalFileName": "Hiring Manager Recruiting Request Form_2025_FOR BAMBOO.pdf",
+      "size": 4459407,
+      "dateCreated": "2025-09-26T13:35:10+0000",
+      "createdBy": "Cecile Quillard",
+      "shareWithEmployee": "yes"
+    },
+    {
+      "categoryId": 17,
+      "category": "Signed Documents",
+      "fileId": 328,
+      "name": "US People Policies Guide w. State Supplements_04.2025.pdf",
+      "originalFileName": "US People Policies Guide w. State Supplements_04.2025.pdf",
+      "size": 4146683,
+      "dateCreated": "2025-05-22T00:49:57+0000",
+      "createdBy": "Jeffrey Wheeler",
+      "shareWithEmployee": "yes"
+    }
+  ]
+}
