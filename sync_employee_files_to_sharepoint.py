@@ -29,13 +29,16 @@ Required env vars (see also .env):
   SHAREPOINT_FOLDER_PATH    e.g. "Personnel Files/Active"
 
 Usage:
-  python sync_employee_files_to_sharepoint.py            # sync everyone
-  python sync_employee_files_to_sharepoint.py EMAIL ...  # sync only listed emails
-  python sync_employee_files_to_sharepoint.py --dry-run  # plan only, no uploads
+    python sync_employee_files_to_sharepoint.py                    # sync test group only
+    python sync_employee_files_to_sharepoint.py EMAIL ...         # sync listed emails, limited to test group
+    python sync_employee_files_to_sharepoint.py --dry-run         # plan only, no uploads
+    python sync_employee_files_to_sharepoint.py --all-users       # disable test-group-only safeguard
+    python sync_employee_files_to_sharepoint.py --use-test-group  # explicit test-group mode
 """
 
 from __future__ import annotations
 
+import json
 import os
 import re
 import sys
@@ -227,6 +230,39 @@ def upload_bytes(session: requests.Session, drive_id: str, dest_path: str,
 
 # --- Path planning ------------------------------------------------------------
 
+def load_test_users() -> set[str]:
+    """Load test user emails from test_users.json, return as lowercase set."""
+    try:
+        with open("test_users.json") as f:
+            data = json.load(f)
+            emails = data.get("test_emails", [])
+            return {e.lower() for e in emails if e}
+    except FileNotFoundError:
+        print("ERROR: test_users.json not found", file=sys.stderr)
+        return set()
+    except json.JSONDecodeError as e:
+        print(f"ERROR: test_users.json is invalid JSON: {e}", file=sys.stderr)
+        return set()
+
+
+def _mask_filename(filename: str) -> str:
+    """Mask filename showing only first 4 and last 4 chars (for GitHub output)."""
+    if not os.environ.get("GITHUB_ACTIONS"):
+        return filename
+    if len(filename) <= 8:
+        return filename
+    # Split on / to handle paths, mask each component
+    parts = filename.split("/")
+    masked_parts = []
+    for part in parts:
+        if len(part) <= 8:
+            masked_parts.append(part)
+        else:
+            masked = part[:4] + "*" * (len(part) - 8) + part[-4:]
+            masked_parts.append(masked)
+    return "/".join(masked_parts)
+
+
 def plan_destination(root: str, pay_schedule: str, employee_folder: str,
                      category: str, filename: str) -> str:
     pay_schedule = _safe_segment(pay_schedule)
@@ -277,7 +313,7 @@ def sync_employee(bamboo: requests.Session, graph: requests.Session,
             try:
                 existing = get_item_by_path(graph, drive_id, dest)
             except requests.HTTPError as e:
-                print(f"  ERROR checking {dest}: {e}")
+                print(f"  ERROR checking {_mask_filename(dest)}: {e}")
                 failed += 1
                 continue
 
@@ -286,13 +322,13 @@ def sync_employee(bamboo: requests.Session, graph: requests.Session,
                 size_ok = (not isinstance(expected_size, int)) or expected_size == 0 \
                     or actual == expected_size
                 if size_ok:
-                    print(f"  SKIP  {dest}  (exists, size={actual})")
+                    print(f"  SKIP  {_mask_filename(dest)}  (exists, size={actual})")
                     skipped += 1
                     continue
-                print(f"  RE-UP {dest}  (size mismatch: remote={actual}, expected={expected_size})")
+                print(f"  RE-UP {_mask_filename(dest)}  (size mismatch: remote={actual}, expected={expected_size})")
 
             if dry_run:
-                print(f"  PLAN  {dest}  (would upload {expected_size} bytes)")
+                print(f"  PLAN  {_mask_filename(dest)}  (would upload {expected_size} bytes)")
                 continue
 
             try:
@@ -304,10 +340,10 @@ def sync_employee(bamboo: requests.Session, graph: requests.Session,
 
             try:
                 upload_bytes(graph, drive_id, dest, blob)
-                print(f"  OK    {dest}  ({len(blob)} bytes)")
+                print(f"  OK    {_mask_filename(dest)}  ({len(blob)} bytes)")
                 uploaded += 1
             except requests.HTTPError as e:
-                print(f"  FAIL  upload {dest}: {e.response.status_code} {e.response.text[:200]}")
+                print(f"  FAIL  upload {_mask_filename(dest)}: {e.response.status_code} {e.response.text[:200]}")
                 failed += 1
             except Exception as e:
                 print(f"  FAIL  upload {dest}: {e}")
@@ -320,7 +356,14 @@ def sync_employee(bamboo: requests.Session, graph: requests.Session,
 
 def main(argv: list[str]) -> int:
     dry_run = "--dry-run" in argv
+    use_test_group = "--all-users" not in argv or "--use-test-group" in argv
     only_emails = {a.lower() for a in argv if "@" in a}
+
+    if use_test_group:
+        test_emails = load_test_users()
+        if not test_emails:
+            return 2
+        only_emails = only_emails & test_emails if only_emails else test_emails
 
     required = [
         "BAMBOO_HR_KEY",
@@ -350,6 +393,8 @@ def main(argv: list[str]) -> int:
 
     root = os.environ["SHAREPOINT_FOLDER_PATH"]
     print(f"Root: {root}")
+    if use_test_group:
+        print(f"TEST GROUP ONLY — scoped to {len(only_emails)} user(s) from test_users.json")
     if dry_run:
         print("DRY RUN — no uploads will be performed.")
 

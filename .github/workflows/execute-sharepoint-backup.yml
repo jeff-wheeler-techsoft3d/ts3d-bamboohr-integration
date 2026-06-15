@@ -6,10 +6,18 @@ on:
     # Daily at 07:00 UTC (≈ overnight in US/EU).
     - cron: '0 7 * * *'
 
+permissions:
+  contents: read
+
+concurrency:
+  group: execute-sharepoint-backup
+  cancel-in-progress: false
+
 jobs:
   execute-sharepoint-backup:
     name: Backup BambooHR Employee Files to SharePoint
     runs-on: ubuntu-latest
+    environment: main
     container:
       image: python:3.10.12
     env:
@@ -23,10 +31,18 @@ jobs:
       SHAREPOINT_FOLDER_PATH: ${{ secrets.SHAREPOINT_FOLDER_PATH }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Run migrate_folders.py
+        run: |
+          if [ -f folder_mapping_test.csv ] && [ -f employee_subfolders.csv ] && [ -f test_users.json ]; then
+            python3 migrate_folders.py --use-test-group
+          else
+            echo "Skipping migrate_folders.py: required mapping/test files not present in repo."
+          fi
+
       - name: Run sync_employee_files_to_sharepoint.py
-        run: python3 sync_employee_files_to_sharepoint.py
+        run: python3 sync_employee_files_to_sharepoint.py --use-test-group

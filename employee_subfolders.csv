@@ -1,0 +1,86 @@
+Subfolder Name,Occurrences,Recommended Destination,Notes
+3-Onboarding,101,Personnel/Onboarding,Onboarding materials
+6-Correspondance,85,Personnel/Correspondence,General correspondence
+4- Benefits,56,Confidential,Benefits/health info is sensitive
+1-Identité,55,Confidential,"French: Identity docs (passport, ID)"
+2-Contrat de travail,55,Personnel/Employment Contracts,French: Employment contract
+7- Degrees,55,Personnel/Onboarding,Degrees & certificates go into Onboarding
+7-Diplômes,52,Personnel/Onboarding,French: Degrees/diplomas go into Onboarding
+2-Employment contract,46,Personnel/Employment Contracts,Contract docs
+5-Sick leave,46,Confidential,Medical/leave info is sensitive
+4-Affiliations sante prevoyance retraite,43,Confidential,French: Health/benefits affiliation
+5-Arrets,43,Confidential,French: Sick leave (arrêts)
+Personnel,35,Personnel,Already in correct structure
+1-ID,30,Confidential,"ID and personal docs (passport, ID)"
+Confidential,27,Confidential,Already in correct structure
+1- ID,26,Confidential,"ID and personal docs (passport, ID)"
+2- Employment Contract,26,Personnel/Employment Contracts,Contract docs
+3- Onboarding,25,Personnel/Onboarding,Onboarding materials
+5- Sick Leave,25,Confidential,Medical/leave info is sensitive
+6- Correspondence,25,Personnel/Correspondence,General correspondence
+1-Identity,16,Confidential,"ID and personal docs (passport, ID)"
+"4-Health affiliation, retirement foresight",15,Confidential,Benefits/health info is sensitive
+6-Correspondences,14,Personnel/Correspondence,General correspondence
+5-Arrêts,12,Confidential,French: Sick leave (arrêts)
+4-Affiliations santé prévoyance retraite,11,Confidential,French: Health/benefits affiliation
+7-Certificate-degree,11,Personnel/Onboarding,Degrees & certificates go into Onboarding
+6-Correspondances,2,Personnel/Correspondence,General correspondence
+7-Certificate -degree,2,Personnel/Onboarding,Degrees & certificates go into Onboarding
+7-Certificate degree,2,Personnel/Onboarding,Degrees & certificates go into Onboarding
+GP employment,2,Personnel/Employment Contracts,Global Professional Employer contract
+Paycheck activ,2,Confidential,Compensation records are sensitive
+dossier sans titre,2,Personnel (review),French: Untitled folder - review manually
+2019 - BUREAU DU COLOMBIER Marc - 01.09.2016-28.02.2019,1,Personnel/Correspondence,Historical/archive folder
+3- Benefits,1,Confidential,Benefits/health info is sensitive
+4- Sick Leave,1,Confidential,Medical/leave info is sensitive
+4-Affiliation santé prévoyance retraite,1,Confidential,French: Health/benefits affiliation
+5- Correspondence,1,Personnel/Correspondence,General correspondence
+7- Diplômes,1,Personnel/Onboarding,French: Degrees/diplomas go into Onboarding
+7-Diplome,1,Personnel/Onboarding,Degrees & certificates go into Onboarding
+8 - INTERNSHIP_MEGUIN Nathan_DOH 1 APR 2025,1,EXCLUDE,Misidentified - this is an employee folder
+8 - PTO,1,Confidential,Paid time off records
+"ABASSI, Muhammad Hasham Waseem - DOH APR 7, 2026",1,EXCLUDE,Misidentified - this is an employee folder
+"ALTAF,Muhammad Usman-DOH APR 7, 2026",1,EXCLUDE,Misidentified - this is an employee folder
+Absences,1,Confidential,Benefits/leave records are sensitive
+"Actify files-Anderson, Mark",1,Personnel/Legacy Actify Files,Historical files from Actify acquisition
+"Actify files-Barta, Christine",1,Personnel/Legacy Actify Files,Historical files from Actify acquisition
+"Actify files-Barta, Franz",1,Personnel/Legacy Actify Files,Historical files from Actify acquisition
+"Actify files-Bell, Garry",1,Personnel/Legacy Actify Files,Historical files from Actify acquisition
+"Actify files-Dalton, Charrise",1,Personnel/Legacy Actify Files,Historical files from Actify acquisition
+"Actify files-Fare, Pierre-Yves",1,Personnel/Legacy Actify Files,Historical files from Actify acquisition
+"Actify files-Galland, Loic",1,Personnel/Legacy Actify Files,Historical files from Actify acquisition
+"Actify files-Hardy, Allen",1,Personnel/Legacy Actify Files,Historical files from Actify acquisition
+"Actify files-Hartnett, Tanja",1,Personnel/Legacy Actify Files,Historical files from Actify acquisition
+"Actify files-Kuhnt, Kerstin",1,Personnel/Legacy Actify Files,Historical files from Actify acquisition
+"Actify files-McClure, David",1,Personnel/Legacy Actify Files,Historical files from Actify acquisition
+"Actify files-Mills, Ross",1,Personnel/Legacy Actify Files,Historical files from Actify acquisition
+"Actify files-Moreau, Charissa",1,Personnel/Legacy Actify Files,Historical files from Actify acquisition
+"Actify files-Sellei, Eszter",1,Personnel/Legacy Actify Files,Historical files from Actify acquisition
+"Actify files-Stroe, Alin",1,Personnel/Legacy Actify Files,Historical files from Actify acquisition
+"Actify files-Tomosoiu, Dan",1,Personnel/Legacy Actify Files,Historical files from Actify acquisition
+"Actify files-Wolfenden, Mary-Ann",1,Personnel/Legacy Actify Files,Historical files from Actify acquisition
+Apprenticeship,1,Personnel/Onboarding,Intern/apprentice placement docs
+Before August 2021 - tranfser to Velocity G,1,Personnel/Employment Contracts,Historical transfer documentation
+Child Voucher CSV,1,Confidential,Benefits/leave records are sensitive
+Confidentiel,1,Personnel (review),No automatic rule matched - review manually
+Development plan,1,Personnel/Correspondence,Performance/development docs
+Elodie Walter Gibbon-UK contract,1,Personnel/Employment Contracts,Contract documentation
+Holcak Filip_Netherlands' contract,1,Personnel/Employment Contracts,Contract documentation
+INTERNSHIP,1,Personnel/Onboarding,Intern/apprentice placement docs
+Interview Director_,1,Personnel/Correspondence,Interview documentation
+LEDEUL ANne-Sophie_DOG 25 MAR 2025,1,EXCLUDE,Misidentified - this is an employee folder
+MUHAMMAD Hassan_DOH 1 APR 2025,1,EXCLUDE,Misidentified - this is an employee folder
+OFFBOARDING,1,Personnel/Offboarding,Offboarding/termination docs
+PTO,1,Confidential,Paid time off records
+PTP,1,Confidential,Paid time off records
+Paychecks,1,Confidential,Compensation records are sensitive
+Payroll & Benefits setting,1,Confidential,Compensation/payroll records are sensitive
+Payslip Activ,1,Confidential,Compensation records are sensitive
+Personnal,1,Personnel (review),No automatic rule matched - review manually
+Salary Sacrifice,1,Confidential,Compensation arrangement is sensitive
+Salary sacrifice,1,Confidential,Compensation arrangement is sensitive
+Stage + Alternance,1,Personnel/Onboarding,Intern/apprentice placement docs
+Stage 3eme et Lycée - découverte,1,EXCLUDE,Intern program container folder
+Transfer,1,Personnel/Employment Contracts,Internal transfer documentation
+Transfer GP,1,Personnel/Employment Contracts,Internal transfer documentation
+fitness,1,Personnel/Correspondence,Performance/development docs

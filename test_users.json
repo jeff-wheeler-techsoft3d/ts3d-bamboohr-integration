@@ -1,0 +1,10 @@
+{
+  "description": "Test group for People Experience team validation. These users will be synced when --use-test-group flag is used.",
+  "test_emails": [
+    "jeff.wheeler@techsoft3d.com",
+    "victor.lecomte@techsoft3d.com",
+    "ayelet.goss@techsoft3d.com",
+    "karen.burleigh@techsoft3d.com",
+    "elodie.tupin@techsoft3d.com"
+  ]
+}
