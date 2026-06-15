@@ -561,9 +561,9 @@ def migrate_active(session: requests.Session, drive_id: str, root: str,
         confidence = row.get("Match Confidence", "")
 
         print(f"\n{'=' * 70}")
-        print(f"MIGRATE: {old_path}")
-        print(f"     TO: {new_path}")
-        print(f"  TRUST: {confidence}")
+        print(f"MIGRATE: {_mask_filename(old_path)}")
+        print(f"     TO: {_mask_filename(new_path)}")
+        print(f"  TRUST: {_mask_filename(confidence)}")
         print(f"{'=' * 70}")
 
         # Resolve old folder
@@ -604,11 +604,11 @@ def migrate_active(session: requests.Session, drive_id: str, root: str,
             print("  Partial migration: old folder remains in place (not moved to Migrated/)")
         else:
             if dry_run:
-                print(f"  Would move old folder to: {migrated_dest}")
+                print(f"  Would move old folder to: {_mask_filename(migrated_dest)}")
             else:
                 parent_item = ensure_folder(session, drive_id, migrated_parent)
                 move_item(session, drive_id, source_item["id"], parent_item["id"])
-                print(f"  Moved old folder to: {migrated_dest}")
+                print(f"  Moved old folder to: {_mask_filename(migrated_dest)}")
 
             total_migrated += 1
 
@@ -634,8 +634,8 @@ def migrate_inactive(session: requests.Session, drive_id: str, root: str,
         inactive_dest = f"{inactive_base}/{rel_from_root}"
         inactive_parent = inactive_dest.rsplit("/", 1)[0]
 
-        print(f"\n  INACTIVE: {old_path}")
-        print(f"   MOVE TO: {inactive_dest}")
+        print(f"\n  INACTIVE: {_mask_filename(old_path)}")
+        print(f"   MOVE TO: {_mask_filename(inactive_dest)}")
 
         if dry_run:
             total_moved += 1
@@ -643,7 +643,7 @@ def migrate_inactive(session: requests.Session, drive_id: str, root: str,
 
         source_item = get_item_by_path(session, drive_id, old_path)
         if not source_item:
-            print(f"    ERROR: Source not found: {old_path}")
+            print(f"    ERROR: Source not found: {_mask_filename(old_path)}")
             total_errors += 1
             continue
 

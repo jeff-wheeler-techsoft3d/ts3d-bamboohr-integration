@@ -4,6 +4,44 @@ import os
 import base64
 import requests
 import pycountry
+import re
+import builtins
+
+
+def _mask_token(text):
+    token = str(text)
+    if len(token) <= 8:
+        return "*" * len(token)
+    return token[:4] + "*" * (len(token) - 8) + token[-4:]
+
+
+def _sanitize_log_value(value):
+    text = str(value)
+    text = re.sub(
+        r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}",
+        lambda m: _mask_token(m.group(0)),
+        text,
+    )
+    text = re.sub(
+        r"\b[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}\b",
+        lambda m: _mask_token(m.group(0)),
+        text,
+    )
+    text = re.sub(
+        r"\b(?=[A-Za-z0-9_-]{12,}\b)(?=.*[A-Za-z])(?=.*\d)[A-Za-z0-9_-]+\b",
+        lambda m: _mask_token(m.group(0)),
+        text,
+    )
+    return text
+
+
+if os.environ.get("GITHUB_ACTIONS"):
+    _orig_print = builtins.print
+
+    def _safe_print(*args, **kwargs):
+        _orig_print(*(_sanitize_log_value(a) for a in args), **kwargs)
+
+    print = _safe_print
 
 def get_country_code(text):
     countries = pycountry.countries

@@ -263,6 +263,22 @@ def _mask_filename(filename: str) -> str:
     return "/".join(masked_parts)
 
 
+def _mask_value(value: str) -> str:
+    """Mask a generic identifier for GitHub Actions logs."""
+    if not os.environ.get("GITHUB_ACTIONS"):
+        return value
+    if value is None:
+        return ""
+    text = str(value)
+    if "@" in text:
+        local, _, domain = text.partition("@")
+        local_masked = local[:2] + "*" * max(0, len(local) - 4) + local[-2:] if len(local) > 4 else "*" * len(local)
+        return f"{local_masked}@{domain}"
+    if len(text) <= 8:
+        return text
+    return text[:4] + "*" * (len(text) - 8) + text[-4:]
+
+
 def plan_destination(root: str, pay_schedule: str, employee_folder: str,
                      category: str, filename: str) -> str:
     pay_schedule = _safe_segment(pay_schedule)
@@ -288,11 +304,14 @@ def sync_employee(bamboo: requests.Session, graph: requests.Session,
     folder_name = employee_folder_name(emp.get("firstName"), emp.get("lastName"), email)
 
     if not (emp_id and email and pay_schedule and folder_name):
-        print(f"  SKIP employee (missing fields): id={emp_id} email={email} "
-              f"paySchedule={pay_schedule} folder={folder_name}")
+        print(f"  SKIP employee (missing fields): id={_mask_value(emp_id)} email={_mask_value(email)} "
+              f"paySchedule={_mask_value(pay_schedule)} folder={_mask_value(folder_name)}")
         return (0, 0, 0)
 
-    print(f"\n== {email}  (id={emp_id}, paySchedule={pay_schedule}, folder='{folder_name}') ==")
+    print(
+        f"\n== {_mask_value(email)}  (id={_mask_value(emp_id)}, "
+        f"paySchedule={_mask_value(pay_schedule)}, folder='{_mask_value(folder_name)}') =="
+    )
 
     try:
         listing = list_employee_files(bamboo, emp_id)
@@ -334,7 +353,7 @@ def sync_employee(bamboo: requests.Session, graph: requests.Session,
             try:
                 blob = download_employee_file(bamboo, emp_id, file_id)
             except requests.HTTPError as e:
-                print(f"  FAIL  download fileId={file_id}: {e}")
+                print(f"  FAIL  download fileId={_mask_value(file_id)}: {e}")
                 failed += 1
                 continue
 
@@ -346,7 +365,7 @@ def sync_employee(bamboo: requests.Session, graph: requests.Session,
                 print(f"  FAIL  upload {_mask_filename(dest)}: {e.response.status_code} {e.response.text[:200]}")
                 failed += 1
             except Exception as e:
-                print(f"  FAIL  upload {dest}: {e}")
+                print(f"  FAIL  upload {_mask_filename(dest)}: {e}")
                 failed += 1
 
     return (uploaded, skipped, failed)
@@ -385,14 +404,14 @@ def main(argv: list[str]) -> int:
           f"{os.environ['SHAREPOINT_SITE_PATH']} ...")
     site_id = resolve_site_id(graph, os.environ["SHAREPOINT_HOSTNAME"],
                               os.environ["SHAREPOINT_SITE_PATH"])
-    print(f"  site id: {site_id}")
+    print(f"  site id: {_mask_value(site_id)}")
 
     print(f"Resolving drive '{os.environ['SHAREPOINT_DRIVE_NAME']}' ...")
     drive_id = resolve_drive_id(graph, site_id, os.environ["SHAREPOINT_DRIVE_NAME"])
-    print(f"  drive id: {drive_id}")
+    print(f"  drive id: {_mask_value(drive_id)}")
 
     root = os.environ["SHAREPOINT_FOLDER_PATH"]
-    print(f"Root: {root}")
+    print(f"Root: {_mask_filename(root)}")
     if use_test_group:
         print(f"TEST GROUP ONLY — scoped to {len(only_emails)} user(s) from test_users.json")
     if dry_run:
