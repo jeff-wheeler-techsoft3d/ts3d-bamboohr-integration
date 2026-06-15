@@ -5,10 +5,18 @@ on:
   schedule:
     - cron: '15 * * * *'
 
+permissions:
+  contents: read
+
+concurrency:
+  group: execute-group-sync
+  cancel-in-progress: false
+
 jobs:
   execute-group-sync:
     name: Create and Update Employee Groups
     runs-on: ubuntu-latest
+    environment: main
     container:
       image: python:3.10.12
     env:
@@ -21,7 +29,7 @@ jobs:
       jumpcloud_token: ${{ secrets.JUMPCLOUD_TOKEN }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Install dependencies
         run: pip install -r requirements.txt

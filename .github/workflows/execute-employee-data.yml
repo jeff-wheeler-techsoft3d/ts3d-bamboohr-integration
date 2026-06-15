@@ -5,10 +5,18 @@ on:
   schedule:
     - cron: '0 * * * *'
 
+permissions:
+  contents: read
+
+concurrency:
+  group: execute-employee-data
+  cancel-in-progress: false
+
 jobs:
   execute-employee-data:
     name: Copy Employee Data for Email Signatures
     runs-on: ubuntu-latest
+    environment: main
     container:
       image: python:3.10.12
     env:
@@ -18,7 +26,7 @@ jobs:
       azure_client_secret: ${{ secrets.AZURE_CLIENT_SECRET }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Install dependencies
         run: pip install -r requirements.txt
